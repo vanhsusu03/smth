@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style lang="scss" scoped>
+      .nav-container {
+        display: inline-grid;
+        column-gap: 50px;
+        width: 100%;
+        border-bottom: 1px solid rgb(157, 150, 150);
+        .box1,
+        .box2,
+        .box3 {
+          display: flex;
+        }
+        .box1 {
+          grid-column-start: 1;
+          grid-column-end: 5;
+          align-items: center;
+          justify-content: left;
+
+          .name {
+            margin-left: 2%;
+            font-weight: bold;
+          }
+        }
+        .box2 {
+          grid-column-start: 5;
+          grid-column-end: 10;
+          align-items: center;
+          justify-content: left;
+          * {
+            padding-right: 8%;
+          }
+        }
+        .box3 {
+          grid-column-start: 11;
+          grid-column-end: 12;
+          align-items: center;
+          justify-content: left;
+          img {
+            width: 20px;
+          }
+          * {
+            margin-right: 30%;
+          }
+        }
+        img {
+          width: 50px;
+        }
+      }
+      @media only screen and (max-width: 2000px) {
+        .nav-container {
+          .drop-down {
+            display: none;
+          }
+        }
+      }
+      @media only screen and (max-width: 768px) {
+        .nav-container {
+          .box2,
+          .box3 {
+            display: none;
+          }
+          .drop-down {
+            display: grid;
+            grid-column-start: 9;
+            grid-column-end: 11;
+          }
+        }
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="nav-container">
+      <div class="box1">
+        <div class="logo"><img src="./logo.png" alt="" /></div>
+        <div class="name">Lalasia</div>
+      </div>
+      <div class="box2">
+        <div class="product">Product</div>
+        <div class="service">Services</div>
+        <div class="article">Article</div>
+        <div class="about-us">About Us</div>
+      </div>
+      <div class="box3">
+        <div class="cart"><img src="./cart.png" alt="" /></div>
+        <div class="user"><img src="./user.png" alt="" /></div>
+      </div>
+      <div class="drop-down">
+        <img src="./drop-down.png" alt="" />
+      </div>
+    </div>
+  </body>
+</html>
