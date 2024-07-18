@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .register h2 {
+        text-align: center;
+        color: rgb(0, 128, 128);
+        text-transform: uppercase;
+        margin-top: 12%;
+        font-weight: 800;
+      }
+      .register form {
+        background-color: rgb(255, 255, 255);
+        margin-left: 50%;
+        transform: translateX(-50%);
+        width: 50%;
+        padding: 2rem;
+        border-radius: 1rem;
+      }
+      .register #emailer,
+      .register #pass-error,
+      .register #repass-error {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-left: 25%;
+        color: red;
+      }
+      .register .info {
+        margin-left: 25%;
+        font-weight: bold;
+      }
+
+      .register .sub {
+        margin-bottom: 10px;
+        padding: 5px 5px;
+        width: 50%;
+        margin-left: 25%;
+        border-radius: 5px;
+      }
+      .register button {
+        width: 20%;
+        cursor: pointer;
+        margin-top: 20px;
+        padding: 10px;
+        border-style: none;
+        border-radius: 10px;
+        margin-left: 40%;
+        background-color: rgb(0, 128, 128);
+        color: white;
+      }
+
+      .register button:hover {
+        background-color: rgb(229, 227, 88);
+      }
+      ul {
+        background-color: rgb(255, 255, 255);
+        margin-left: 50%;
+        transform: translateX(-50%);
+        width: 30%;
+        padding: 2rem;
+        border-radius: 1rem;
+        margin-top: -2%;
+      }
+      li {
+        list-style: none;
+        margin: 10px 10px 10px 10px;
+        padding: 10px 10px 10px 10px;
+        background-color: rgb(185, 185, 185);
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="register">
+      <div><h2>todos</h2></div>
+
+      <form onsubmit="handleSubmit()" novalidate autocapitalize="off">
+        <label for="email" class="info">Thêm todo </label>
+        <br />
+        <br />
+        <input
+          type="email"
+          id="email"
+          class="sub"
+          placeholder="Thêm todo ở đây"
+          required
+        />
+        <div id="emailer"></div>
+        <br />
+        <div class="btn">
+          <button type="submit">Thêm</button>
+        </div>
+      </form>
+      <br />
+    </div>
+
+    <div id="list"></div>
+    <script>
+      var emailError = []
+      var email = ''
+      var listTodo = []
+
+      const getTodoList = () => {
+        listTodo = JSON.parse(localStorage.getItem('todolist'))
+        let listDiv = document.getElementById('list')
+        listDiv.innerHTML = ''
+        let ul = document.createElement('ul')
+        for (let i = 0; i < listTodo.length; ++i) {
+          let li = document.createElement('li')
+          li.textContent = listTodo[i]
+
+          li.onclick = () => {
+            editTodo(i, li)
+          }
+
+          let deleteButton = document.createElement('button')
+          deleteButton.textContent = 'X'
+          deleteButton.style.marginLeft = '10px'
+          deleteButton.style.cursor = 'pointer'
+          deleteButton.onclick = () => {
+            removeTask(i)
+          }
+
+          li.appendChild(deleteButton)
+          ul.appendChild(li)
+        }
+
+        listDiv.appendChild(ul)
+      }
+
+      getTodoList()
+
+      const resetError = () => {
+        emailError = []
+        let tmp = document.getElementById('emailer')
+        if (tmp.hasChildNodes()) {
+          tmp.removeChild(tmp.firstChild)
+        }
+      }
+
+      const checkEmptyErr = () => {
+        if (emailError.length == 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+
+      const checkAdd = () => {
+        resetError()
+        email = document.getElementById('email').value
+        if (email.length == 0) {
+          emailError.push('Please enter your email!')
+          const p = document.createElement('p')
+
+          const emailer = document.createTextNode('Chưa nhập todo')
+
+          p.appendChild(emailer)
+          document.getElementById('emailer').appendChild(p)
+        }
+      }
+
+      const handleSubmit = () => {
+        checkAdd()
+        if (checkEmptyErr()) {
+          add()
+        } else {
+          event.preventDefault()
+        }
+      }
+
+      const add = () => {
+        listTodo.push(email)
+        localStorage.setItem('todolist', JSON.stringify(listTodo))
+        getTodoList()
+      }
+
+      const removeTask = index => {
+        listTodo.splice(index, 1)
+        localStorage.setItem('todolist', JSON.stringify(listTodo))
+        getTodoList()
+      }
+
+      const editTodo = (id, li) => {
+        let input = document.createElement('input')
+
+        input.type = 'text'
+        input.value = listTodo[id]
+
+        li.innerHTML = ''
+        li.appendChild(input)
+        input.focus()
+
+        input.onblur = () => {
+          updateTodo(id, input.value)
+        }
+      }
+
+      const updateTodo = (id, newValue) => {
+        listTodo[id] = newValue
+        localStorage.setItem('todolist', JSON.stringify(listTodo))
+        getTodoList()
+      }
+    </script>
+  </body>
+</html>
